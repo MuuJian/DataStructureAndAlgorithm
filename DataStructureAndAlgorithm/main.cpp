@@ -11,7 +11,8 @@ using std::cout;
 
 int main()
 {
-	vector<int> num5{5,5,5,5,5,1,2,3,4,5,12,2,2,4,5,6,7,9};
+	vector<int> num5{5,5,5,5,5,1,2,3,4,5,8,2,4,5,6,7,9};
+
 	num5.Deduplicate();
 	num5.Traverse();
 	num5.Sort();

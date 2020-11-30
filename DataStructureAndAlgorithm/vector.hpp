@@ -16,7 +16,7 @@ class vector
 {
 private:
 	Rank size_; Rank capacity_; T* elem_;
-	void CopyForm(T const* A, Rank lo, Rank hi); //复制数组区间
+	void CopyForm(const T* A, Rank lo, Rank hi); //复制数组区间
 	void Expand(); //扩容
 	void Shrink(); //压缩
 	
@@ -46,16 +46,22 @@ public:
 	
 	T Remove(Rank r); //删除下标为r的元素
 	int Remove(Rank lo, Rank hi); //删除区间
+	
 	void Insert(Rank r, const T& e); //插入
-	void Insert(const T& e){return Insert(size_, e);} //末尾插入
+	void Insert(const T& e) { return Insert(size_, e);} //末尾插入
+	
 	Rank Size() const; //规模
 	bool Empty() const; //判断为空
-	Rank Find(const T& e) const {return Find(e, 0, size_);} //无序查找
+	
+	Rank Find(const T& e) const { return Find(e, 0, size_);} //无序查找
 	Rank Find(const T& e, Rank lo, Rank hi) const; //无序区间查找
-	void Unsort(); //乱序
+	
 	int Deduplicate(); //无序去重
-	void Traverse(); //遍历
 	int Uniquift(); //有序去重
+	
+	void Traverse(); //遍历
+	void Unsort(); //乱序
+
 	Rank Search(const T& e) const { return (0 >= size_) ? -1 : Search(e, 0, size_);} //有序查找
 	Rank Search(const T& e, Rank lo, Rank hi) const; //有序区间查找
 	
@@ -145,16 +151,6 @@ vector<T>& vector<T>::operator=(const vector<T>& v)
 
 
 template<typename T>
-void vector<T>::CopyForm(T const* A, Rank lo, Rank hi)
-{
-	elem_ = new T[capacity_ = 2 * (hi - lo)];
-	size_ = 0;
-	while(lo < hi)
-		elem_[size_++] = A[lo++];
-}
-
-
-template<typename T>
 void vector<T>::Expand()
 {
 	if(size_ < capacity_) return;
@@ -181,6 +177,16 @@ void vector<T>::Shrink()
 
 
 template<typename T>
+void vector<T>::CopyForm(T const* A, Rank lo, Rank hi)
+{
+	elem_ = new T[capacity_ = 2 * (hi - lo)];
+	size_ = 0;
+	while(lo < hi)
+		elem_[size_++] = A[lo++];
+}
+
+
+template<typename T>
 void vector<T>::Unsort()
 {
 	for(Rank i = size_; i > 0; --i)
@@ -189,9 +195,15 @@ void vector<T>::Unsort()
 
 
 template<typename T>
-void vector<T>::Insert(Rank r, const T&e)
+Rank vector<T>::Size() const
 {
-	if(r > size_) return;
+	return size_;
+}
+
+
+template<typename T>
+void vector<T>::Insert(Rank r, const T& e)
+{
 	Expand();
 	for(Rank i = size_; i > r; --i)
 		elem_[i] = elem_[i - 1];
@@ -199,6 +211,13 @@ void vector<T>::Insert(Rank r, const T&e)
 	++size_;
 }
 
+template<typename T>
+T vector<T>::Remove(Rank r)
+{
+	T e = elem_[r];
+	Remove(r, r + 1);
+	return e;
+}
 
 template<typename T>
 int vector<T>::Remove(Rank lo, Rank hi)
@@ -212,27 +231,16 @@ int vector<T>::Remove(Rank lo, Rank hi)
 
 
 template<typename T>
-T vector<T>::Remove(Rank r)
+Rank vector<T>::Find(const T& e, Rank lo, Rank hi) const
 {
-	T e = elem_[r];
-	Remove(r, r + 1);
-	return e;
+	while((lo < hi) && e != elem_[lo])
+		++lo;
+	return lo;
 }
 
 
 template<typename T>
-Rank vector<T>::Find(const T&e, Rank lo, Rank hi) const
-{
-	while(hi > lo && e != elem_[hi])
-	{
-		--hi;
-	}
-	return hi;
-}
-
-
-template<typename T>
-Rank vector<T>::Search(const T&e, Rank lo, Rank hi) const
+Rank vector<T>::Search(const T& e, Rank lo, Rank hi) const
 {
 	while(lo < hi)
 	{
@@ -249,20 +257,13 @@ Rank vector<T>::Search(const T&e, Rank lo, Rank hi) const
 
 
 template<typename T>
-Rank vector<T>::Size() const
-{
-	return size_;
-}
-
-
-template<typename T>
 int vector<T>::Deduplicate()
 {
 	Rank oldsize = size_;
 	Rank i  = 1;
 	while(i < size_)
 	{
-		(Find(elem_[i], 0, i) < 0) ? ++i : Remove(i);
+		(Find(elem_[i], 0, i) == i) ? ++i : Remove(i);
 	}
 	return static_cast<int>(oldsize - size_);
 }
@@ -347,7 +348,7 @@ void vector<T>::InsertionSort()
 	Rank i, j;
 	int key;
 	cout << "InsertionSort" << endl;
-	for(i = 1; i < size_ - 1; ++i)
+	for(i = 1; i < size_; ++i)
 	{
 		key = elem_[i];
 		j = i - 1;
@@ -373,7 +374,7 @@ void vector<T>::SelectSort()
 			if(elem_[min] > elem_[j])
 				min = j;
 		}
-		std::swap(elem_[i], elem_[min]);
+		swap(elem_[i], elem_[min]);
 	}
 }
 
@@ -381,20 +382,14 @@ void vector<T>::SelectSort()
 template<typename T>
 void vector<T>::BubbleSort()
 {
-	cout << "Bubble" << endl;
+	cout << "bubble" << endl;
 	for(Rank i = 0; i < size_; ++i)
 	{
-		bool sorted = true;
 		for(Rank j = i + 1; j < size_; ++j)
 		{
-			if(elem_[j] < elem_[i])
-			{
-				sorted = false;
-				std::swap(elem_[j], elem_[i]);
-			}
+			if(elem_[i] > elem_[j])
+				swap(elem_[i], elem_[j]);
 		}
-		if(sorted == true)
-			return;
 	}
 }
 

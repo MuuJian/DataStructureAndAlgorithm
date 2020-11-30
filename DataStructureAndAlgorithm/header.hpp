@@ -17,6 +17,7 @@ using std::initializer_list;
 using std::srand;
 using std::rand;
 using std::time;
+using std::swap;
 
 using Rank = std::size_t;
 
