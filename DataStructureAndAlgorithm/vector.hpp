@@ -19,7 +19,7 @@ using std::endl;
 using std::initializer_list;
 
 
-#define DEFAULT_CAPACITY 3
+#define DEFAULTcapacity_ 3
 using Rank = std::size_t;
 
 
@@ -27,7 +27,7 @@ template <typename T>
 class vector
 {
 protected:
-	Rank _size; Rank _capacity; T* _elem;
+	Rank size_; Rank capacity_; T* elem_;
 	void CopyForm(T const* A, Rank lo, Rank hi); //复制数组区间
 	void Expand(); //扩容
 	void Shrink(); //压缩
@@ -55,18 +55,18 @@ public:
 	
 	T Remove(Rank r); //删除下标为r的元素
 	int Remove(Rank lo, Rank hi); //删除区间
-	void Insert(Rank r, T const& e); //插入
-	void Insert(T const& e){return Insert(_size, e);} //末尾插入
+	void Insert(Rank r, const T& e); //插入
+	void Insert(const T& e){return Insert(size_, e);} //末尾插入
 	Rank Size() const; //规模
 	bool Empty() const; //判断为空
-	Rank Find(T const& e) const {return Find(e, 0, _size);} //无序查找
-	Rank Find(T const& e, Rank lo, Rank hi) const; //无序区间查找
+	Rank Find(const T& e) const {return Find(e, 0, size_);} //无序查找
+	Rank Find(const T& e, Rank lo, Rank hi) const; //无序区间查找
 	void Unsort(); //乱序
 	int Deduplicate(); //无序去重
 	void Traverse(); //遍历
 	int Uniquift(); //有序去重
-	Rank Search(T const& e) const { return (0 >= _size) ? -1 : Search(e, 0, _size);} //有序查找
-	Rank Search(T const& e, Rank lo, Rank hi) const; //有序区间查找
+	Rank Search(const T& e) const { return (0 >= size_) ? -1 : Search(e, 0, size_);} //有序查找
+	Rank Search(const T& e, Rank lo, Rank hi) const; //有序区间查找
 	
 	
 	void Sort(); //排序
@@ -77,7 +77,7 @@ template<typename T>
 vector<T>::~vector()
 {
 	cout << "destroy" << endl;
-	delete[] _elem;
+	delete[] elem_;
 }
 
 
@@ -85,10 +85,10 @@ template<typename T>
 vector<T>::vector(Rank size, T var)
 {
 	cout << "constructor" << endl;
-	_elem = new T[_capacity = size * 2];
-	for(_size = 0; _size < size; ++_size)
+	elem_ = new T[capacity_ = size * 2];
+	for(size_ = 0; size_ < size; ++size_)
 	{
-		_elem[_size] = var;
+		elem_[size_] = var;
 	}
 }
 
@@ -97,22 +97,22 @@ template<typename T>
 vector<T>::vector(const initializer_list<T>& list)
 {
 	cout << "list construcot" << endl;
-	_elem = new T[_capacity = 2 * list.size()];
-	_size = 0;
+	elem_ = new T[capacity_ = 2 * list.size()];
+	size_ = 0;
 	for(T tmp : list)
 	{
-		_elem[_size++] = tmp;
+		elem_[size_++] = tmp;
 	}
 }
 
 
 template<typename T>
-vector<T>::vector(vector<T>&& v) noexcept : _elem(v._elem), _size(v._size), _capacity(v._capacity)
+vector<T>::vector(vector<T>&& v) noexcept : elem_(v.elem_), size_(v.size_), capacity_(v.capacity_)
 {
 	cout << "move constructors" << endl;
-	v._elem = nullptr;
-	v._size = 0;
-	v._capacity = 0;
+	v.elem_ = nullptr;
+	v.size_ = 0;
+	v.capacity_ = 0;
 }
 
 
@@ -123,13 +123,13 @@ vector<T>& vector<T>::operator=(vector<T>&& v) noexcept
 	{
 		cout << "move assignments" << endl;
 
-		delete[] _elem;
-		_elem = v._elem;
-		_size = v._size;
-		_capacity = v._capacity;
-		v._elem = nullptr;
-		v._size = 0;
-		v._capacity = 0;
+		delete[] elem_;
+		elem_ = v.elem_;
+		size_ = v.size_;
+		capacity_ = v.capacity_;
+		v.elem_ = nullptr;
+		v.size_ = 0;
+		v.capacity_ = 0;
 	}
 	return *this;
 }
@@ -139,7 +139,7 @@ template<typename T>
 vector<T>::vector(const vector<T>& v)
 {
 	cout << "copy constructor" << endl;
-	CopyForm(v._elem, 0, v._size);
+	CopyForm(v.elem_, 0, v.size_);
 }
 
 
@@ -147,8 +147,8 @@ template<typename T>
 vector<T>& vector<T>::operator=(const vector<T>& v)
 {
 	cout << "assignment operator" << endl;
-	if(_elem) delete[] _elem;
-	CopyForm(v._elem, 0, v.Size());
+	if(elem_) delete[] elem_;
+	CopyForm(v.elem_, 0, v.Size());
 	return *this;
 }
 
@@ -156,22 +156,22 @@ vector<T>& vector<T>::operator=(const vector<T>& v)
 template<typename T>
 void vector<T>::CopyForm(T const* A, Rank lo, Rank hi)
 {
-	_elem = new T[_capacity = 2 * (hi - lo)];
-	_size = 0;
+	elem_ = new T[capacity_ = 2 * (hi - lo)];
+	size_ = 0;
 	while(lo < hi)
-		_elem[_size++] = A[lo++];
+		elem_[size_++] = A[lo++];
 }
 
 
 template<typename T>
 void vector<T>::Expand()
 {
-	if(_size < _capacity) return;
-	if(_capacity < DEFAULT_CAPACITY) _capacity = DEFAULT_CAPACITY;
-	T* _oldelem = _elem;
-	_elem = new T[_capacity <<= 1];
-	for(int i = 0; i < _size; ++i)
-		_elem[i] = _oldelem[i];
+	if(size_ < capacity_) return;
+	if(capacity_ < DEFAULTcapacity_) capacity_ = DEFAULTcapacity_;
+	T* _oldelem = elem_;
+	elem_ = new T[capacity_ <<= 1];
+	for(int i = 0; i < size_; ++i)
+		elem_[i] = _oldelem[i];
 	delete[] _oldelem;
 }
 
@@ -179,12 +179,12 @@ void vector<T>::Expand()
 template<typename T>
 void vector<T>::Shrink()
 {
-	if(_capacity < DEFAULT_CAPACITY << 1) return;
-	if(_size << 2 > _capacity) return;
-	T* _oldelem = _elem;
-	_elem = new T[_capacity >>= 1];
-	for(int i = 0; i < _size; ++i)
-		_elem[i] = _oldelem[i];
+	if(capacity_ < DEFAULTcapacity_ << 1) return;
+	if(size_ << 2 > capacity_) return;
+	T* _oldelem = elem_;
+	elem_ = new T[capacity_ >>= 1];
+	for(int i = 0; i < size_; ++i)
+		elem_[i] = _oldelem[i];
 	delete[] _oldelem;
 }
 
@@ -192,20 +192,20 @@ void vector<T>::Shrink()
 template<typename T>
 void vector<T>::Unsort()
 {
-	for(Rank i = _size; i > 0; --i)
-		std::swap(_elem[i - 1], _elem[rand() % i]);
+	for(Rank i = size_; i > 0; --i)
+		std::swap(elem_[i - 1], elem_[rand() % i]);
 }
 
 
 template<typename T>
-void vector<T>::Insert(Rank r, T const&e)
+void vector<T>::Insert(Rank r, const T&e)
 {
-	if(r > _size) return;
+	if(r > size_) return;
 	Expand();
-	for(Rank i = _size; i > r; --i)
-		_elem[i] = _elem[i - 1];
-	_elem[r] = e;
-	++_size;
+	for(Rank i = size_; i > r; --i)
+		elem_[i] = elem_[i - 1];
+	elem_[r] = e;
+	++size_;
 }
 
 
@@ -213,8 +213,8 @@ template<typename T>
 int vector<T>::Remove(Rank lo, Rank hi)
 {
 	if(lo == hi) return 0;
-	while(hi < _size) _elem[lo++] = _elem[hi++];
-	_size = lo;
+	while(hi < size_) elem_[lo++] = elem_[hi++];
+	size_ = lo;
 	Shrink();
 	return static_cast<int>(hi - lo);
 }
@@ -223,16 +223,16 @@ int vector<T>::Remove(Rank lo, Rank hi)
 template<typename T>
 T vector<T>::Remove(Rank r)
 {
-	T e = _elem[r];
+	T e = elem_[r];
 	Remove(r, r + 1);
 	return e;
 }
 
 
 template<typename T>
-Rank vector<T>::Find(T const&e, Rank lo, Rank hi) const
+Rank vector<T>::Find(const T&e, Rank lo, Rank hi) const
 {
-	while(lo < hi && e != _elem[lo])
+	while(lo < hi && e != elem_[lo])
 	{
 		++lo;
 	}
@@ -241,14 +241,14 @@ Rank vector<T>::Find(T const&e, Rank lo, Rank hi) const
 
 
 template<typename T>
-Rank vector<T>::Search(T const&e, Rank lo, Rank hi) const
+Rank vector<T>::Search(const T&e, Rank lo, Rank hi) const
 {
 	while(lo < hi)
 	{
 		Rank mi = lo + (hi - lo) / 2;
-		if(e < _elem[mi])
+		if(e < elem_[mi])
 			hi = mi;
-		else if(e > _elem[mi])
+		else if(e > elem_[mi])
 			lo = mi + 1;
 		else
 			return mi;
@@ -260,20 +260,20 @@ Rank vector<T>::Search(T const&e, Rank lo, Rank hi) const
 template<typename T>
 Rank vector<T>::Size() const
 {
-	return _size;
+	return size_;
 }
 
 
 template<typename T>
 int vector<T>::Deduplicate()
 {
-	Rank oldsize = _size;
+	Rank oldsize = size_;
 	Rank i  = 1;
-	while(i < _size)
+	while(i < size_)
 	{
-		Find(_elem[i], 0, i) ? ++i : Remove(i);
+		Find(elem_[i], 0, i) ? ++i : Remove(i);
 	}
-	return static_cast<int>(oldsize - _size);
+	return static_cast<int>(oldsize - size_);
 }
 
 
@@ -281,12 +281,12 @@ template<typename T>
 int vector<T>::Uniquift()
 {
 	Rank i = 0, j = 0;
-	while(++j < _size)
+	while(++j < size_)
 	{
-		if(_elem[i] != _elem[j])
-			_elem[++i] = _elem[j];
+		if(elem_[i] != elem_[j])
+			elem_[++i] = elem_[j];
 	}
-	_size = ++i; Shrink();
+	size_ = ++i; Shrink();
 	return j - i;
 }
 
@@ -294,14 +294,14 @@ int vector<T>::Uniquift()
 template<typename T>
 T& vector<T>::operator[](Rank r) const
 {
-	return _elem[r];
+	return elem_[r];
 }
 
 
 template<typename T>
 bool vector<T>::Empty() const
 {
-	return _size == 0 ? true : false;
+	return size_ == 0 ? true : false;
 }
 
 
@@ -321,8 +321,8 @@ void vector<T>::Traverse ()
 {
 	if(!Empty())
 	{
-		for ( int i = 0; i < _size; i++ )
-			Print<T>()(_elem[i]);
+		for ( int i = 0; i < size_; i++ )
+			Print<T>()(elem_[i]);
 		cout << endl;
 	}
 	else
@@ -351,15 +351,15 @@ template<typename T>
 void vector<T>::SelectSort()
 {
 	Rank min = 0;
-	for(Rank i = 0; i < _size; ++i)
+	for(Rank i = 0; i < size_; ++i)
 	{
 		min = i;
-		for(Rank j = i + 1; j < _size; ++j)
+		for(Rank j = i + 1; j < size_; ++j)
 		{
-			if(_elem[min] > _elem[j])
+			if(elem_[min] > elem_[j])
 				min = j;
 		}
-		std::swap(_elem[i], _elem[min]);
+		std::swap(elem_[i], elem_[min]);
 	}
 }
 
@@ -367,15 +367,15 @@ void vector<T>::SelectSort()
 template<typename T>
 void vector<T>::BubbleSort()
 {
-	for(Rank i = 0; i < _size; ++i)
+	for(Rank i = 0; i < size_; ++i)
 	{
 		bool sorted = true;
-		for(Rank j = i + 1; j < _size; ++j)
+		for(Rank j = i + 1; j < size_; ++j)
 		{
-			if(_elem[j] < _elem[i])
+			if(elem_[j] < elem_[i])
 			{
 				sorted = false;
-				std::swap(_elem[j], _elem[i]);
+				std::swap(elem_[j], elem_[i]);
 			}
 		}
 		if(sorted == true)
