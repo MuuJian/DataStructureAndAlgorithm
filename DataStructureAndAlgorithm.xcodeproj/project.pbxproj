@@ -26,6 +26,7 @@
 		B42D3ED325739E0A006E6AD0 /* DataStructureAndAlgorithm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DataStructureAndAlgorithm; sourceTree = BUILT_PRODUCTS_DIR; };
 		B42D3ED625739E0A006E6AD0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B42D3EDE25739E26006E6AD0 /* vector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vector.hpp; sourceTree = "<group>"; };
+		B43E15882574FE130003DD11 /* header.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = header.hpp; sourceTree = "<group>"; };
 		B4CDBAC925739F8700AB809B /* vector-test */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "vector-test"; sourceTree = "<group>"; };
 		B4CDBACB25739FC400AB809B /* listnode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = listnode.hpp; sourceTree = "<group>"; };
 		B4CDBACD2573A65B00AB809B /* list.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = list.hpp; sourceTree = "<group>"; };
@@ -61,6 +62,7 @@
 		B42D3ED525739E0A006E6AD0 /* DataStructureAndAlgorithm */ = {
 			isa = PBXGroup;
 			children = (
+				B43E15882574FE130003DD11 /* header.hpp */,
 				B4CDBAC925739F8700AB809B /* vector-test */,
 				B42D3EDE25739E26006E6AD0 /* vector.hpp */,
 				B42D3ED625739E0A006E6AD0 /* main.cpp */,

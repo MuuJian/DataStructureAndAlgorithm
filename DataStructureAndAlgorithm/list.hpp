@@ -23,6 +23,8 @@ protected:
 	void Init(); //初始化
 	int Clear(); //清除全部节点
 	void CopyNodes(ListNodePosi<T> p, int n); //复制自p项起n个节点
+	
+	
 
 public:
 	
@@ -71,6 +73,7 @@ public:
 	ListNodePosi<T> Min() const;
 	
 	//可写
+	
 };
 
 

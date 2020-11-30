@@ -9,24 +9,12 @@
 #ifndef vector_h
 #define vector_h
 
-
-#include<iostream>
-#include<initializer_list>
-
-
-using std::cout;
-using std::endl;
-using std::initializer_list;
-
-
-#define DEFAULTcapacity_ 3
-using Rank = std::size_t;
-
+#include "header.hpp"
 
 template <typename T>
 class vector
 {
-protected:
+private:
 	Rank size_; Rank capacity_; T* elem_;
 	void CopyForm(T const* A, Rank lo, Rank hi); //复制数组区间
 	void Expand(); //扩容
@@ -35,12 +23,15 @@ protected:
 	//排序
 	void SelectSort();
 	void BubbleSort();
+	void InsertionSort();
 	
+	/*
 	void Merge(Rank lo, Rank mi, Rank hi);
 	void MergeSort(Rank lo, Rank hi);
 	Rank Partition(Rank lo, Rank hi);
 	void QuickSort(Rank lo, Rank hi);
 	void HeapSort(Rank lo, Rank hi);
+	*/
 	
 public:
 	vector(Rank size = 0, T var = 0); //构造函数
@@ -232,11 +223,11 @@ T vector<T>::Remove(Rank r)
 template<typename T>
 Rank vector<T>::Find(const T&e, Rank lo, Rank hi) const
 {
-	while(lo < hi && e != elem_[lo])
+	while(hi > lo && e != elem_[hi])
 	{
-		++lo;
+		--hi;
 	}
-	return lo;
+	return hi;
 }
 
 
@@ -271,7 +262,7 @@ int vector<T>::Deduplicate()
 	Rank i  = 1;
 	while(i < size_)
 	{
-		Find(elem_[i], 0, i) ? ++i : Remove(i);
+		(Find(elem_[i], 0, i) < 0) ? ++i : Remove(i);
 	}
 	return static_cast<int>(oldsize - size_);
 }
@@ -335,23 +326,46 @@ void vector<T>::Traverse ()
 template<typename T>
 void vector<T>::Sort()
 {
-	switch(rand() % 2)
+	srand(time(nullptr));
+	switch(rand() % 3)
 	{
-		case 1:
+		case 0:
 			SelectSort();
 			break;
-		case 2:
+		case 1:
 			BubbleSort();
 			break;
+		case 2:
+			InsertionSort();
+			break;
 	}
+}
 
+template<typename T>
+void vector<T>::InsertionSort()
+{
+	Rank i, j;
+	int key;
+	cout << "InsertionSort" << endl;
+	for(i = 1; i < size_ - 1; ++i)
+	{
+		key = elem_[i];
+		j = i - 1;
+		while((j >= 0) && (elem_[j] > elem_[i]))
+		{
+			elem_[i] = elem_[j];
+			--j;
+		}
+		elem_[j + 1] = key;
+	}
 }
 
 template<typename T>
 void vector<T>::SelectSort()
 {
 	Rank min = 0;
-	for(Rank i = 0; i < size_; ++i)
+	cout << "Seletct" << endl;
+	for(Rank i = 0; i < size_ - 1; ++i)
 	{
 		min = i;
 		for(Rank j = i + 1; j < size_; ++j)
@@ -367,6 +381,7 @@ void vector<T>::SelectSort()
 template<typename T>
 void vector<T>::BubbleSort()
 {
+	cout << "Bubble" << endl;
 	for(Rank i = 0; i < size_; ++i)
 	{
 		bool sorted = true;

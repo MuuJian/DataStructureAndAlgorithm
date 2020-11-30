@@ -8,7 +8,7 @@
 #ifndef listnode_h
 #define listnode_h
 
-using Rank = int;
+#include "header.hpp"
 
 template<typename T>
 class ListNode;
