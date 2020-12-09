@@ -297,17 +297,6 @@ bool vector<T>::Empty() const
 }
 
 
-template<typename T>
-class Print
-{
-public:
-	void operator()(T& var)
-	{
-		cout << var << " ";
-	}
-};
-
-
 template <typename T>
 void vector<T>::Traverse ()
 {

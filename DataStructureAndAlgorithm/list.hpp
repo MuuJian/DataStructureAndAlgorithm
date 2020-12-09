@@ -74,6 +74,19 @@ public:
 	
 	//可写
 	
+	ListNodePosi<T> InsertAsFirst(const T& e);
+	ListNodePosi<T> InsertAsLast(const T& e);
+	ListNodePosi<T> InsertA(ListNodePosi<T> p, const T& e);
+	ListNodePosi<T> InsertB(ListNodePosi<T> p, const T& e);
+	T Remove(ListNodePosi<T> p);
+	void Sort();
+	int Deduplicate();
+	int uniquify();
+	void reverse();
+	
+	//遍歷
+	voide Traverse();
+	
 };
 
 

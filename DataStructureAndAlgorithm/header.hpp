@@ -23,5 +23,16 @@ using Rank = std::size_t;
 
 #define DEFAULTcapacity_ 3
 
+template<typename T>
+class Print
+{
+public:
+	void operator()(T& var)
+	{
+		cout << var << " ";
+	}
+};
+
+
 
 #endif /* Header_h */
