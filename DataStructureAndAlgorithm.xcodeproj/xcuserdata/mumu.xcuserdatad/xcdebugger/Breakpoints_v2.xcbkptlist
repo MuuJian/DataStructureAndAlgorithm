@@ -7,8 +7,8 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1A808DE4-9D38-4F51-8300-BF8DF5CAFA48"
-            shouldBeEnabled = "No"
+            uuid = "E3B77969-EA53-440E-AF20-A44978AD6099"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DataStructureAndAlgorithm/main.cpp"

@@ -12,13 +12,19 @@
 #include "header.hpp"
 
 template <typename T>
-class vector
+class Vector
 {
 private:
-	Rank size_; Rank capacity_; T* elem_;
+	Rank size_;
+	Rank capacity_;
+	T* elem_;
+	
+protected:
 	void CopyForm(const T* A, Rank lo, Rank hi); //复制数组区间
 	void Expand(); //扩容
 	void Shrink(); //压缩
+	T Remove(Rank r); //删除下标为r的元素
+	int Remove(Rank lo, Rank hi); //删除区间
 	
 	//排序
 	void SelectSort();
@@ -34,24 +40,21 @@ private:
 	*/
 	
 public:
-	vector(Rank size = 0, T var = 0); //构造函数
-	vector(const initializer_list<T>& list); //列表构造函数
-	vector(const vector<T>& v); //复制构造
-	vector<T>& operator=(const vector<T>& v); //拷贝运算符
-	vector(vector<T>&& v) noexcept; //移动构造
-	vector<T>& operator=(vector<T>&& v) noexcept; //移动赋值运算符
-	~vector(); //析构
+	Vector(Rank size = 0, T var = 0); //构造函数
+	Vector(const initializer_list<T>& list); //列表构造函数
+	Vector(const Vector<T>& v); //复制构造
+	Vector<T>& operator=(const Vector<T>& v); //拷贝运算符
+	Vector(Vector<T>&& v) noexcept; //移动构造
+	Vector<T>& operator=(Vector<T>&& v) noexcept; //移动赋值运算符
+	~Vector(); //析构
 	T& operator[](Rank r) const; //下标访问
 	
-	
-	T Remove(Rank r); //删除下标为r的元素
-	int Remove(Rank lo, Rank hi); //删除区间
 	
 	void Insert(Rank r, const T& e); //插入
 	void Insert(const T& e) { return Insert(size_, e);} //末尾插入
 	
-	Rank Size() const; //规模
-	bool Empty() const; //判断为空
+	Rank Size() const {return size_;} //规模
+	bool Empty() const {return size_ <= 0;} //判断为空
 	
 	Rank Find(const T& e) const { return Find(e, 0, size_);} //无序查找
 	Rank Find(const T& e, Rank lo, Rank hi) const; //无序区间查找
@@ -71,7 +74,7 @@ public:
 
 
 template<typename T>
-vector<T>::~vector()
+Vector<T>::~Vector()
 {
 	cout << "destroy" << endl;
 	delete[] elem_;
@@ -79,7 +82,7 @@ vector<T>::~vector()
 
 
 template<typename T>
-vector<T>::vector(Rank size, T var)
+Vector<T>::Vector(Rank size, T var)
 {
 	cout << "constructor" << endl;
 	elem_ = new T[capacity_ = size * 2];
@@ -91,12 +94,12 @@ vector<T>::vector(Rank size, T var)
 
 
 template<typename T>
-vector<T>::vector(const initializer_list<T>& list)
+Vector<T>::Vector(const initializer_list<T>& list)
 {
 	cout << "list construcot" << endl;
 	elem_ = new T[capacity_ = 2 * list.size()];
 	size_ = 0;
-	for(T tmp : list)
+	for(const T& tmp : list)
 	{
 		elem_[size_++] = tmp;
 	}
@@ -104,7 +107,7 @@ vector<T>::vector(const initializer_list<T>& list)
 
 
 template<typename T>
-vector<T>::vector(vector<T>&& v) noexcept : elem_(v.elem_), size_(v.size_), capacity_(v.capacity_)
+Vector<T>::Vector(Vector<T>&& v) noexcept : elem_(v.elem_), size_(v.size_), capacity_(v.capacity_)
 {
 	cout << "move constructors" << endl;
 	v.elem_ = nullptr;
@@ -114,7 +117,7 @@ vector<T>::vector(vector<T>&& v) noexcept : elem_(v.elem_), size_(v.size_), capa
 
 
 template<typename T>
-vector<T>& vector<T>::operator=(vector<T>&& v) noexcept
+Vector<T>& Vector<T>::operator=(Vector<T>&& v) noexcept
 {
 	if(this != &v)
 	{
@@ -133,7 +136,7 @@ vector<T>& vector<T>::operator=(vector<T>&& v) noexcept
 
 
 template<typename T>
-vector<T>::vector(const vector<T>& v)
+Vector<T>::Vector(const Vector<T>& v)
 {
 	cout << "copy constructor" << endl;
 	CopyForm(v.elem_, 0, v.size_);
@@ -141,7 +144,7 @@ vector<T>::vector(const vector<T>& v)
 
 
 template<typename T>
-vector<T>& vector<T>::operator=(const vector<T>& v)
+Vector<T>& Vector<T>::operator=(const Vector<T>& v)
 {
 	cout << "assignment operator" << endl;
 	if(elem_) delete[] elem_;
@@ -151,7 +154,7 @@ vector<T>& vector<T>::operator=(const vector<T>& v)
 
 
 template<typename T>
-void vector<T>::Expand()
+void Vector<T>::Expand()
 {
 	if(size_ < capacity_) return;
 	if(capacity_ < DEFAULTcapacity_) capacity_ = DEFAULTcapacity_;
@@ -164,7 +167,7 @@ void vector<T>::Expand()
 
 
 template<typename T>
-void vector<T>::Shrink()
+void Vector<T>::Shrink()
 {
 	if(capacity_ < DEFAULTcapacity_ << 1) return;
 	if(size_ << 2 > capacity_) return;
@@ -177,7 +180,7 @@ void vector<T>::Shrink()
 
 
 template<typename T>
-void vector<T>::CopyForm(T const* A, Rank lo, Rank hi)
+void Vector<T>::CopyForm(T const* A, Rank lo, Rank hi)
 {
 	elem_ = new T[capacity_ = 2 * (hi - lo)];
 	size_ = 0;
@@ -187,7 +190,7 @@ void vector<T>::CopyForm(T const* A, Rank lo, Rank hi)
 
 
 template<typename T>
-void vector<T>::Unsort()
+void Vector<T>::Unsort()
 {
 	for(Rank i = size_; i > 0; --i)
 		std::swap(elem_[i - 1], elem_[rand() % i]);
@@ -195,14 +198,7 @@ void vector<T>::Unsort()
 
 
 template<typename T>
-Rank vector<T>::Size() const
-{
-	return size_;
-}
-
-
-template<typename T>
-void vector<T>::Insert(Rank r, const T& e)
+void Vector<T>::Insert(Rank r, const T& e)
 {
 	Expand();
 	for(Rank i = size_; i > r; --i)
@@ -212,7 +208,7 @@ void vector<T>::Insert(Rank r, const T& e)
 }
 
 template<typename T>
-T vector<T>::Remove(Rank r)
+T Vector<T>::Remove(Rank r)
 {
 	T e = elem_[r];
 	Remove(r, r + 1);
@@ -220,7 +216,7 @@ T vector<T>::Remove(Rank r)
 }
 
 template<typename T>
-int vector<T>::Remove(Rank lo, Rank hi)
+int Vector<T>::Remove(Rank lo, Rank hi)
 {
 	if(lo == hi) return 0;
 	while(hi < size_) elem_[lo++] = elem_[hi++];
@@ -231,7 +227,7 @@ int vector<T>::Remove(Rank lo, Rank hi)
 
 
 template<typename T>
-Rank vector<T>::Find(const T& e, Rank lo, Rank hi) const
+Rank Vector<T>::Find(const T& e, Rank lo, Rank hi) const
 {
 	while((lo < hi) && e != elem_[lo])
 		++lo;
@@ -240,7 +236,7 @@ Rank vector<T>::Find(const T& e, Rank lo, Rank hi) const
 
 
 template<typename T>
-Rank vector<T>::Search(const T& e, Rank lo, Rank hi) const
+Rank Vector<T>::Search(const T& e, Rank lo, Rank hi) const
 {
 	while(lo < hi)
 	{
@@ -257,7 +253,7 @@ Rank vector<T>::Search(const T& e, Rank lo, Rank hi) const
 
 
 template<typename T>
-int vector<T>::Deduplicate()
+int Vector<T>::Deduplicate()
 {
 	Rank oldsize = size_;
 	Rank i  = 1;
@@ -270,7 +266,7 @@ int vector<T>::Deduplicate()
 
 
 template<typename T>
-int vector<T>::Uniquift()
+int Vector<T>::Uniquift()
 {
 	Rank i = 0, j = 0;
 	while(++j < size_)
@@ -284,21 +280,14 @@ int vector<T>::Uniquift()
 
 
 template<typename T>
-T& vector<T>::operator[](Rank r) const
+T& Vector<T>::operator[](Rank r) const
 {
 	return elem_[r];
 }
 
 
-template<typename T>
-bool vector<T>::Empty() const
-{
-	return size_ == 0 ? true : false;
-}
-
-
 template <typename T>
-void vector<T>::Traverse ()
+void Vector<T>::Traverse ()
 {
 	if(!Empty())
 	{
@@ -314,7 +303,7 @@ void vector<T>::Traverse ()
 
 
 template<typename T>
-void vector<T>::Sort()
+void Vector<T>::Sort()
 {
 	srand(time(nullptr));
 	switch(rand() % 3)
@@ -332,7 +321,7 @@ void vector<T>::Sort()
 }
 
 template<typename T>
-void vector<T>::InsertionSort()
+void Vector<T>::InsertionSort()
 {
 	Rank i, j;
 	int key;
@@ -351,7 +340,7 @@ void vector<T>::InsertionSort()
 }
 
 template<typename T>
-void vector<T>::SelectSort()
+void Vector<T>::SelectSort()
 {
 	Rank min = 0;
 	cout << "Seletct" << endl;
@@ -369,7 +358,7 @@ void vector<T>::SelectSort()
 
 
 template<typename T>
-void vector<T>::BubbleSort()
+void Vector<T>::BubbleSort()
 {
 	cout << "bubble" << endl;
 	for(Rank i = 0; i < size_; ++i)

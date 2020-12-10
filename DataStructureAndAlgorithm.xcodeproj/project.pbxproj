@@ -66,8 +66,8 @@
 				B4CDBAC925739F8700AB809B /* vector-test */,
 				B42D3EDE25739E26006E6AD0 /* vector.hpp */,
 				B42D3ED625739E0A006E6AD0 /* main.cpp */,
-				B4CDBACB25739FC400AB809B /* listnode.hpp */,
 				B4CDBACD2573A65B00AB809B /* list.hpp */,
+				B4CDBACB25739FC400AB809B /* listnode.hpp */,
 			);
 			path = DataStructureAndAlgorithm;
 			sourceTree = "<group>";
