@@ -33,13 +33,11 @@ public:
 	List(List<T> const& l, Rank r, int n);
 	List(ListNodePosi<T> p, int n);
 	List(const initializer_list<T>& list);
+	List(List<T>&& v) noexcept; //移动构造
 	List<T>& operator=(const List<T>& v); //拷贝运算符
-	//构造重载
-	/*
-	 List(List<T>&& v) noexcept; //移动构造
-	 List<T>& operator=(List<T>&& v) noexcept; //移动赋值运算符
-	 */
-	
+	List<T>& operator=(List<T>&& v) noexcept; //移动赋值运算符
+
+
 	//析构
 	~List();
 	
@@ -76,10 +74,11 @@ public:
 	ListNodePosi<T> InsertA(ListNodePosi<T> p, const T& e); //前驅插入
 	ListNodePosi<T> InsertB(ListNodePosi<T> p, const T& e); //後繼插入
 	
-	
+	/*
 	void Sort();
 	int Deduplicate();
 	int Uniquify();
+	 */
 	void Reverse();
 	
 	//遍歷
@@ -94,7 +93,7 @@ void List<T>::Init()
 	header_ = new ListNode<T>;
 	trailer_ = new ListNode<T>;
 	header_ -> succ_ = trailer_; header_ -> pred_ = nullptr;
-	trailer_ -> succ_ = nullptr; trailer_ -> pred_ = nullptr;
+	trailer_ -> succ_ = nullptr; trailer_ -> pred_ = header_;
 	size_ = 0;
 }
 
@@ -170,6 +169,33 @@ List<T>& List<T>::operator=(const List<T>& v)
 	return *this;
 }
 
+template<typename T>
+List<T>::List(List<T>&& l) noexcept : size_(l.size), header_(l.header_), trailer_(l.trailer_)
+{
+	l.header_ = nullptr;
+	l.trailer_ = nullptr;
+	l.size_ = 0;
+	return *this;
+}
+
+
+template<typename T>
+List<T>& List<T>::operator=(List<T>&& l) noexcept
+{
+	if(this != &l)
+	{
+		Clear();
+		delete header_;
+		delete trailer_;
+		size_ = l.size_;
+		header_ = l.header_;
+		trailer_ = l.trailer_;
+		l.size_ = 0;
+		l.header_ = nullptr;
+		l.trailer_ = nullptr;
+	}
+	return *this;
+}
 
 template<typename T>
 List<T>::~List()
@@ -252,16 +278,40 @@ ListNodePosi<T> List<T>::InsertB(ListNodePosi<T> p, const T &e)
 template<typename T>
 void List<T>::Reverse()
 {
+	ListNodePosi<T> prev = header_;
+	ListNodePosi<T> curr = header_ -> succ_;
+	ListNodePosi<T> next;
+	while(curr != nullptr)
+	{
+		next = curr -> succ_;
+		curr -> succ_ = prev;
+		prev = curr;
+		curr = next;
+	}
 	
+	prev = trailer_;
+	curr = trailer_ -> pred_;
+	next = nullptr;
+	while(curr != nullptr)
+	{
+		next = curr -> pred_;
+		curr -> pred_ = prev;
+		prev = curr;
+		curr = next;
+	}
+	header_ -> succ_ = nullptr;
+	trailer_ -> pred_ = nullptr;
+	swap(header_, trailer_);
 }
 
 template<typename T>
 void List<T>::Traverse()
 {
-	for(auto p = header_ -> pred_; p != trailer_; p = p -> succ_)
+	for(auto p = header_ -> succ_; p != trailer_; p = p -> succ_)
 	{
 		Print<T>()(p -> data_);
 	}
+	cout << endl;
 }
 
 #endif /* list_h */

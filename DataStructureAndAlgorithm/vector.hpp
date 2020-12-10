@@ -113,6 +113,7 @@ Vector<T>::Vector(Vector<T>&& v) noexcept : elem_(v.elem_), size_(v.size_), capa
 	v.elem_ = nullptr;
 	v.size_ = 0;
 	v.capacity_ = 0;
+	return *this;
 }
 
 

@@ -12,11 +12,10 @@
 
 int main()
 {
-	List<int> l;
-	l.InsertAsLast(3);
+	List<int> l{1,2,3,4,5,6,7,8};
 	l.Traverse();
-	
-	
+	l.Reverse();
+	l.Traverse();
 	return 0;
 
 }
