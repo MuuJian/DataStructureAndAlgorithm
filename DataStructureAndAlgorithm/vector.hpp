@@ -15,9 +15,9 @@ template <typename T>
 class Vector
 {
 private:
-	Rank size_;
-	Rank capacity_;
-	T* elem_;
+	Rank size_ = 0;
+	Rank capacity_ = 0;
+	T* elem_ = nullptr;
 	
 protected:
 	void CopyForm(const T* A, Rank lo, Rank hi); //复制数组区间
@@ -40,6 +40,7 @@ protected:
 	*/
 	
 public:
+	Vector() = default;
 	Vector(Rank size = 0, T var = 0); //构造函数
 	Vector(const initializer_list<T>& list); //列表构造函数
 	Vector(const Vector<T>& v); //复制构造

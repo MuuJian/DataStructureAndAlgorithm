@@ -15,9 +15,9 @@ template<typename T>
 class List
 {
 private:
-	int size_;
-	ListNodePosi<T> header_;
-	ListNodePosi<T> trailer_;
+	int size_ = 0;
+	ListNodePosi<T> header_ = nullptr;
+	ListNodePosi<T> trailer_ = nullptr;
 	
 protected:
 	void Init(); //初始化
