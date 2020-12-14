@@ -28,6 +28,7 @@
 		B42D3EDE25739E26006E6AD0 /* vector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vector.hpp; sourceTree = "<group>"; };
 		B43E15882574FE130003DD11 /* header.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = header.hpp; sourceTree = "<group>"; };
 		B49CF03725834FCF00B1CAB5 /* list-test */ = {isa = PBXFileReference; lastKnownFileType = text; path = "list-test"; sourceTree = "<group>"; };
+		B4A6426825862AF600A8F579 /* shared_ptr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shared_ptr.hpp; sourceTree = "<group>"; };
 		B4CDBAC925739F8700AB809B /* vector-test */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "vector-test"; sourceTree = "<group>"; };
 		B4CDBACB25739FC400AB809B /* listnode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = listnode.hpp; sourceTree = "<group>"; };
 		B4CDBACD2573A65B00AB809B /* list.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = list.hpp; sourceTree = "<group>"; };
@@ -70,6 +71,7 @@
 				B4CDBACD2573A65B00AB809B /* list.hpp */,
 				B4CDBACB25739FC400AB809B /* listnode.hpp */,
 				B49CF03725834FCF00B1CAB5 /* list-test */,
+				B4A6426825862AF600A8F579 /* shared_ptr.hpp */,
 			);
 			path = DataStructureAndAlgorithm;
 			sourceTree = "<group>";
