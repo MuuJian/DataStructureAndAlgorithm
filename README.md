@@ -1,6 +1,6 @@
 # DataStructureAndAlgorithm
  DataStructureAndAlgorithm
 
-- [x] vector
-- [x] list
+- [x] [vector](/vector)
+- [x] [list](/list)
 - [ ] stack
