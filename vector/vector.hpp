@@ -44,9 +44,9 @@ public:
 	Vector(Rank size, T var); //构造函数
 	Vector(const initializer_list<T>& list); //列表构造函数
 	Vector(const Vector<T>& v); //复制构造
-	Vector<T>& operator=(const Vector<T>& v); //拷贝运算符
+	Vector& operator=(const Vector<T>& v); //拷贝运算符
 	Vector(Vector<T>&& v) noexcept; //移动构造
-	Vector<T>& operator=(Vector<T>&& v) noexcept; //移动赋值运算符
+	Vector& operator=(Vector<T>&& v) noexcept; //移动赋值运算符
 	~Vector(); //析构
 	T& operator[](Rank r) const; //下标访问
 	
