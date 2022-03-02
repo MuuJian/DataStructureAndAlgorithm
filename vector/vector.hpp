@@ -218,6 +218,7 @@ void Vector<T>::Insert(Rank r, const T& e)
 	++size_;
 }
 
+
 template<typename T>
 T Vector<T>::Remove(Rank r)
 {
@@ -225,6 +226,7 @@ T Vector<T>::Remove(Rank r)
 	Remove(r, r + 1);
 	return e;
 }
+
 
 template<typename T>
 int Vector<T>::Remove(Rank lo, Rank hi)
@@ -297,9 +299,6 @@ T& Vector<T>::operator[](Rank r) const
 }
 
 
-
-
-
 template<typename T>
 void Vector<T>::Sort()
 {
@@ -317,6 +316,7 @@ void Vector<T>::Sort()
 			break;
 	}
 }
+
 
 template<typename T>
 void Vector<T>::InsertionSort()
@@ -336,6 +336,7 @@ void Vector<T>::InsertionSort()
 		elem_[j + 1] = key;
 	}
 }
+
 
 template<typename T>
 void Vector<T>::SelectSort()
