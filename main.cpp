@@ -1,27 +1,57 @@
 #include<iostream>
-#include<string>
-#include"vector.hpp"
-using std::cout;
-using std::endl;
+#include "SharedPtr.hpp"
 
+struct Foo {
+    Foo() { std::cout << "Foo()\n"; }
+    ~Foo() { std::cout << "~Foo()\n"; }
+    Foo(const Foo&) { std::cout << "Foo copy ctor\n"; }
+    Foo(Foo&&) { std::cout << "Foo move ctor\n"; }
+};
+
+struct Fooo {
+    Fooo(int n = 0) noexcept : bar(n) { std::cout << "Fooo: constructor, bar = " << bar << '\n'; }
+    ~Fooo() { std::cout << "Fooo: destructor, bar = " << bar << '\n'; }
+    int GetBar() const noexcept { return bar; }
+
+private:
+    int bar;
+};
 
 int main()
 {
-    Vector<int> num; //constructor
-    Vector<int> num2{1,2,3,4,5}; //list constructor
-    num = num2; //assignment operator
-    Vector<int> num3 = num2; //copy constructor
-    num3 = {1,2,3};//move operator  list constructor
-    Vector<int> num4 = std::move(num3);//move constructor
-    num2.Insert(5,6);
-    num2.Traverse();
-    cout << num2.Find(5) << endl;
-    cout << num2.Search(3) << endl;
-    Vector<int> num5{5,5,5,5,5,1,2,3,4,5,8,2,4,5,6,7,9};
-    num5.Deduplicate();
-    num5.Traverse();
-    num5.Sort();
-    num5.Traverse();
+    std::cout << "SharedPtr constructor with no managed object\n";
+    {
+        SharedPtr<Foo> sh1;
+    }
+    
+    std::cout << "SharedPtr constructor with object\n";
+    {
+        SharedPtr<Foo> sh2(new Foo);
+        std::cout << sh2.use_count() << '\n';
+        SharedPtr<Foo> sh3(sh2);
+        std::cout << sh3.use_count() << '\n';
+        SharedPtr<Foo> sh4;
+        sh4 = std::move(sh3);
+        std::cout << sh4.use_count() << '\n';
+    }
+    
+    std::cout << "SharedPtr constructor with deleter\n";
+    {
+        SharedPtr<Foo> sh5(new Foo, [](Foo* p) {
+            std::cout << "Call delete from lambda...\n";
+            delete p;
+        });
+    }
+
+    {
+        SharedPtr<Fooo> sptr(new Fooo(1));
+        std::cout << "The first Fooo's bar is " << sptr->GetBar() << "\n";
+        sptr.reset(new Fooo);
+        std::cout << "The second Fooo's bar is " << sptr->GetBar() << "\n";
+    }
+
+
+
 
 
 }
