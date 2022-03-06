@@ -50,31 +50,27 @@ public:
 	~Vector(); //析构
 	T& operator[](Rank r) const; //下标访问
 	
-	
 	void Insert(Rank r, const T& e); //插入
 	void Insert(const T& e) { return Insert(size_, e);} //末尾插入
 	
 	Rank Size() const {return size_;} //规模
 	bool Empty() const {return size_ <= 0;} //判断为空
 	
-	Rank Find(const T& e) const { return Find(e, 0, size_);} //无序查找
-	Rank Find(const T& e, Rank lo, Rank hi) const; //无序区间查找
-	
 	int Deduplicate(); //无序去重
 	int Uniquift(); //有序去重
-	
+    void Unsort(); //乱序
+
 	template<typename VST = Print<T> >
 	void Traverse(const VST& visit = VST()); //遍历
 	
-	void Unsort(); //乱序
-
 	Rank Search(const T& e) const { return (0 >= size_) ? -1 : Search(e, 0, size_);} //有序查找
 	Rank Search(const T& e, Rank lo, Rank hi) const; //有序区间查找
-	
+    
+    Rank Find(const T& e) const { return Find(e, 0, size_);} //无序查找
+    Rank Find(const T& e, Rank lo, Rank hi) const; //无序区间查找
 	
 	void Sort(); //排序
 };
-
 
 template<typename T> template<typename VST>
 void Vector<T>::Traverse(const VST& visit)
@@ -83,14 +79,12 @@ void Vector<T>::Traverse(const VST& visit)
         visit(elem_[i]);
 }
 
-
 template<typename T>
 Vector<T>::~Vector()
 {
 	cout << "destroy" << endl;
 	delete[] elem_;
 }
-
 
 template<typename T>
 Vector<T>::Vector(Rank size, T var)
@@ -102,7 +96,6 @@ Vector<T>::Vector(Rank size, T var)
 		elem_[size_] = var;
 	}
 }
-
 
 template<typename T>
 Vector<T>::Vector(const initializer_list<T>& list)
@@ -116,7 +109,6 @@ Vector<T>::Vector(const initializer_list<T>& list)
 	}
 }
 
-
 template<typename T>
 Vector<T>::Vector(Vector<T>&& v) noexcept : elem_(v.elem_), size_(v.size_), capacity_(v.capacity_)
 {
@@ -125,7 +117,6 @@ Vector<T>::Vector(Vector<T>&& v) noexcept : elem_(v.elem_), size_(v.size_), capa
 	v.size_ = 0;
 	v.capacity_ = 0;
 }
-
 
 template<typename T>
 Vector<T>& Vector<T>::operator=(Vector<T>&& v) noexcept
@@ -145,14 +136,12 @@ Vector<T>& Vector<T>::operator=(Vector<T>&& v) noexcept
 	return *this;
 }
 
-
 template<typename T>
 Vector<T>::Vector(const Vector<T>& v)
 {
 	cout << "copy constructor" << endl;
 	CopyForm(v.elem_, 0, v.size_);
 }
-
 
 template<typename T>
 Vector<T>& Vector<T>::operator=(const Vector<T>& v)
@@ -162,7 +151,6 @@ Vector<T>& Vector<T>::operator=(const Vector<T>& v)
 	CopyForm(v.elem_, 0, v.Size());
 	return *this;
 }
-
 
 template<typename T>
 void Vector<T>::Expand()
@@ -176,7 +164,6 @@ void Vector<T>::Expand()
 	delete[] _oldelem;
 }
 
-
 template<typename T>
 void Vector<T>::Shrink()
 {
@@ -189,7 +176,6 @@ void Vector<T>::Shrink()
 	delete[] _oldelem;
 }
 
-
 template<typename T>
 void Vector<T>::CopyForm(T const* A, Rank lo, Rank hi)
 {
@@ -199,14 +185,12 @@ void Vector<T>::CopyForm(T const* A, Rank lo, Rank hi)
 		elem_[size_++] = A[lo++];
 }
 
-
 template<typename T>
 void Vector<T>::Unsort()
 {
 	for(Rank i = size_; i > 0; --i)
 		std::swap(elem_[i - 1], elem_[rand() % i]);
 }
-
 
 template<typename T>
 void Vector<T>::Insert(Rank r, const T& e)
@@ -218,7 +202,6 @@ void Vector<T>::Insert(Rank r, const T& e)
 	++size_;
 }
 
-
 template<typename T>
 T Vector<T>::Remove(Rank r)
 {
@@ -226,7 +209,6 @@ T Vector<T>::Remove(Rank r)
 	Remove(r, r + 1);
 	return e;
 }
-
 
 template<typename T>
 int Vector<T>::Remove(Rank lo, Rank hi)
@@ -238,7 +220,6 @@ int Vector<T>::Remove(Rank lo, Rank hi)
 	return static_cast<int>(hi - lo);
 }
 
-
 template<typename T>
 Rank Vector<T>::Find(const T& e, Rank lo, Rank hi) const
 {
@@ -246,7 +227,6 @@ Rank Vector<T>::Find(const T& e, Rank lo, Rank hi) const
 		++lo;
 	return lo;
 }
-
 
 template<typename T>
 Rank Vector<T>::Search(const T& e, Rank lo, Rank hi) const
@@ -264,7 +244,6 @@ Rank Vector<T>::Search(const T& e, Rank lo, Rank hi) const
 	return -1;
 }
 
-
 template<typename T>
 int Vector<T>::Deduplicate()
 {
@@ -276,7 +255,6 @@ int Vector<T>::Deduplicate()
 	}
 	return static_cast<int>(oldsize - size_);
 }
-
 
 template<typename T>
 int Vector<T>::Uniquift()
@@ -291,13 +269,11 @@ int Vector<T>::Uniquift()
 	return static_cast<int>(j - i);
 }
 
-
 template<typename T>
 T& Vector<T>::operator[](Rank r) const
 {
 	return elem_[r];
 }
-
 
 template<typename T>
 void Vector<T>::Sort()
@@ -316,7 +292,6 @@ void Vector<T>::Sort()
 			break;
 	}
 }
-
 
 template<typename T>
 void Vector<T>::InsertionSort()
@@ -337,7 +312,6 @@ void Vector<T>::InsertionSort()
 	}
 }
 
-
 template<typename T>
 void Vector<T>::SelectSort()
 {
@@ -354,7 +328,6 @@ void Vector<T>::SelectSort()
 		swap(elem_[i], elem_[min]);
 	}
 }
-
 
 template<typename T>
 void Vector<T>::BubbleSort()

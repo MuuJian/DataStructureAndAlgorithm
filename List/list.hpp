@@ -10,7 +10,6 @@
 
 #include "listnode.hpp"
 
-
 template<typename T>
 class List
 {
@@ -25,7 +24,6 @@ protected:
 	void CopyNodes(ListNodePosi<T> p, int n); //复制自p项起n个节点
 	T Remove(ListNodePosi<T> p);
 	
-	
 public:
 	//构造
 	List(){ Init();}
@@ -36,7 +34,6 @@ public:
 	List(List<T>&& v) noexcept; //移动构造
 	List<T>& operator=(const List<T>& v); //拷贝运算符
 	List<T>& operator=(List<T>&& v) noexcept; //移动赋值运算符
-
 
 	//析构
 	~List();
@@ -66,25 +63,20 @@ public:
 	}
 	ListNodePosi<T> Search(const T& e, Rank n, ListNodePosi<T> p) const;
 	
-	
 	//可写
-	
 	ListNodePosi<T> InsertAsFirst(const T& e); //插頭
 	ListNodePosi<T> InsertAsLast(const T& e); //插尾
 	ListNodePosi<T> InsertA(ListNodePosi<T> p, const T& e); //前驅插入
 	ListNodePosi<T> InsertB(ListNodePosi<T> p, const T& e); //後繼插入
-	
 
 	int Deduplicate();
-	
 	
 	void Reverse();
 	
 	//遍歷
 	void Traverse();
-	
-};
 
+};
 
 template<typename T>
 void List<T>::Init()
@@ -95,7 +87,6 @@ void List<T>::Init()
 	trailer_ -> succ_ = nullptr; trailer_ -> pred_ = header_;
 	size_ = 0;
 }
-
 
 template<typename T>
 void List<T>::CopyNodes(ListNodePosi<T> p, int n)
@@ -108,7 +99,6 @@ void List<T>::CopyNodes(ListNodePosi<T> p, int n)
 	}
 }
 
-
 template<typename T>
 T List<T>::Remove(ListNodePosi<T> p)
 {
@@ -120,7 +110,6 @@ T List<T>::Remove(ListNodePosi<T> p)
 	return data;
 }
 
-
 template<typename T>
 void List<T>::Clear()
 {
@@ -128,20 +117,17 @@ void List<T>::Clear()
 		Remove(header_->succ_);
 }
 
-
 template<typename T>
 List<T>::List(ListNodePosi<T> p, int n)
 {
 	CopyNodes(p, n);
 }
 
-
 template<typename T>
 List<T>::List(const List<T>& l)
 {
 	CopyNodes(l.First(), l.size_);
 }
-
 
 template<typename T>
 List<T>::List(List<T> const& l, Rank r, int n)
@@ -159,7 +145,6 @@ List<T>::List(const initializer_list<T>& list)
 	}
 }
 
-
 template<typename T>
 List<T>& List<T>::operator=(const List<T>& v)
 {
@@ -176,7 +161,6 @@ List<T>::List(List<T>&& l) noexcept: size_(l.size), header_(l.header_), trailer_
 	l.size_ = 0;
 	return *this;
 }
-
 
 template<typename T>
 List<T>& List<T>::operator=(List<T>&& l) noexcept
@@ -204,7 +188,6 @@ List<T>::~List()
 	delete trailer_;
 }
 
-
 template<typename T>
 T& List<T>::operator[](Rank r) const
 {
@@ -215,7 +198,6 @@ T& List<T>::operator[](Rank r) const
 	}
 	return p -> data_;
 }
-
 
 template<typename T>
 ListNodePosi<T> List<T>::Find(const T& e, Rank n, ListNodePosi<T> p) const
@@ -229,7 +211,6 @@ ListNodePosi<T> List<T>::Find(const T& e, Rank n, ListNodePosi<T> p) const
 	return nullptr;
 }
 
-
 template<typename T>
 ListNodePosi<T> List<T>::Search(const T& e, Rank n, ListNodePosi<T> p) const
 {
@@ -241,7 +222,6 @@ ListNodePosi<T> List<T>::Search(const T& e, Rank n, ListNodePosi<T> p) const
 	}
 	return p;
 }
-
 
 template<typename T>
 ListNodePosi<T> List<T>::InsertAsFirst(const T &e)
@@ -257,7 +237,6 @@ ListNodePosi<T> List<T>::InsertAsLast(const T &e)
 	return trailer_->InsertAsPred(e);
 }
 
-
 template<typename T>
 ListNodePosi<T> List<T>::InsertA(ListNodePosi<T> p, const T &e)
 {
@@ -265,14 +244,12 @@ ListNodePosi<T> List<T>::InsertA(ListNodePosi<T> p, const T &e)
 	return p->InsertAsPred(e);
 }
 
-
 template<typename T>
 ListNodePosi<T> List<T>::InsertB(ListNodePosi<T> p, const T &e)
 {
 	size_++;
 	return p->InsertAsSucc(e);
 }
-
 
 template<typename T>
 void List<T>::Reverse()
@@ -319,7 +296,6 @@ int List<T>::Deduplicate()
 	
 }
 
-
 template<typename T>
 void List<T>::Traverse()
 {
@@ -329,6 +305,5 @@ void List<T>::Traverse()
 	}
 	cout << endl;
 }
-
 
 #endif /* list_h */

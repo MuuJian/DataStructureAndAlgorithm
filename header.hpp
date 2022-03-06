@@ -8,10 +8,12 @@
 #ifndef Header_h
 #define Header_h
 
-#include<iostream>
-#include<initializer_list>
-#include<vector>
-#include<string>
+#include <iostream>
+#include <initializer_list>
+#include <vector>
+#include <string>
+
+#define DEFAULTcapacity_ 3
 
 using std::cout;
 using std::endl;
@@ -23,10 +25,7 @@ using std::swap;
 using std::vector;
 using std::string;
 
-
 using Rank = std::size_t;
-
-#define DEFAULTcapacity_ 3
 
 template<typename T>
 class Print
@@ -42,7 +41,5 @@ public:
         cout << endl;
     }
 };
-
-
 
 #endif /* Header_h */

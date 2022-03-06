@@ -8,7 +8,6 @@
 #ifndef SharedPtr_h
 #define SharedPtr_h
 
-
 template<typename T>
 class SharedPtr
 {
@@ -64,7 +63,6 @@ public:
     
     SharedPtr& operator=(SharedPtr&& sp) noexcept
     {
-        
         if(this != &sp)
         {
             destroy();
@@ -103,6 +101,5 @@ private:
     size_t* count_ptr_ = nullptr;
     DelFuncPtr del_ = nullptr;
 };
-
 
 #endif /* SharedPtr_h */

@@ -17,7 +17,6 @@ public:
     }
 };
 
-
 template<typename T, typename D = Delete>
 class UniquePtr{
 public:
@@ -83,7 +82,6 @@ public:
     T& operator*() const { return *ptr_; }
     T* operator->() const noexcept { return ptr_; }
 
-    
 private:
     T* ptr_ = nullptr;
     D del_;

@@ -10,14 +10,12 @@
 
 #include "header.hpp"
 
-
 template<typename T>
 class ListNode;
 template<typename T>
 using ListNodePosi = ListNode<T> *;
 template<typename T>
 class List;
-
 
 template<typename T>
 class ListNode
@@ -46,7 +44,6 @@ ListNodePosi<T> ListNode<T>::InsertAsPred(const T& e)
 	return x;
 }
 
-
 template<typename T>
 ListNodePosi<T> ListNode<T>::InsertAsSucc(const T& e)
 {
@@ -55,6 +52,5 @@ ListNodePosi<T> ListNode<T>::InsertAsSucc(const T& e)
 	this -> succ_ = x;
 	return x;
 }
-
 
 #endif /* list_h */
