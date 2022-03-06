@@ -49,20 +49,17 @@ public:
             destroy();
             ptr_ = sp.ptr_;
             count_ptr_ = sp.count_ptr_;
-            ++(*count_ptr_);
             del_ = sp.del_;
+            ++(*count_ptr_);
         }
         return *this;
     }
     
     SharedPtr(SharedPtr&& sp) noexcept: ptr_(sp.ptr_), count_ptr_(sp.count_ptr_), del_(sp.del_)
     {
-        if(this != &sp)
-        {
-            sp.ptr_ = nullptr;
-            sp.count_ptr_ = nullptr;
-            sp.del_ = nullptr;
-        }
+        sp.ptr_ = nullptr;
+        sp.count_ptr_ = nullptr;
+        sp.del_ = nullptr;
     }
     
     SharedPtr& operator=(SharedPtr&& sp) noexcept

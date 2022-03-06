@@ -64,7 +64,7 @@ public:
 	int Uniquift(); //有序去重
 	
 	template<typename VST = Print<T> >
-	void Traverse(VST visit = VST()); //遍历
+	void Traverse(const VST& visit = VST()); //遍历
 	
 	void Unsort(); //乱序
 
@@ -77,7 +77,7 @@ public:
 
 
 template<typename T> template<typename VST>
-void Vector<T>::Traverse(VST visit)
+void Vector<T>::Traverse(const VST& visit)
 {
     for(int i = 0; i < size_; i++ )
         visit(elem_[i]);

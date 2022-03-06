@@ -1,5 +1,7 @@
 #include<iostream>
 #include "SharedPtr.hpp"
+#include "UniquePtr.hpp"
+#include "DebugDelete.hpp"
 
 struct Foo {
     Foo() { std::cout << "Foo()\n"; }
@@ -17,41 +19,26 @@ private:
     int bar;
 };
 
+struct D {
+    void bar() { std::cout << "Call deleter D::bar()...\n"; }
+    void operator()(Foo* p) const
+    {
+        std::cout << "Call delete from function object...\n";
+        delete p;
+    }
+};
+
 int main()
 {
-    std::cout << "SharedPtr constructor with no managed object\n";
     {
-        SharedPtr<Foo> sh1;
-    }
+        std::cout << "======================\nUniquePtr constructor:\n";
+        UniquePtr<Foo> up5b(new Foo());
+        UniquePtr<Foo> up7(new Foo());
+        up7 = std::move(up5b);
+        Foo* fp = up7.release();
+        assert(up7.get() == nullptr);
+        delete fp;
+
     
-    std::cout << "SharedPtr constructor with object\n";
-    {
-        SharedPtr<Foo> sh2(new Foo);
-        std::cout << sh2.use_count() << '\n';
-        SharedPtr<Foo> sh3(sh2);
-        std::cout << sh3.use_count() << '\n';
-        SharedPtr<Foo> sh4;
-        sh4 = std::move(sh3);
-        std::cout << sh4.use_count() << '\n';
     }
-    
-    std::cout << "SharedPtr constructor with deleter\n";
-    {
-        SharedPtr<Foo> sh5(new Foo, [](Foo* p) {
-            std::cout << "Call delete from lambda...\n";
-            delete p;
-        });
-    }
-
-    {
-        SharedPtr<Fooo> sptr(new Fooo(1));
-        std::cout << "The first Fooo's bar is " << sptr->GetBar() << "\n";
-        sptr.reset(new Fooo);
-        std::cout << "The second Fooo's bar is " << sptr->GetBar() << "\n";
-    }
-
-
-
-
-
 }
