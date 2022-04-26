@@ -43,10 +43,10 @@ public:
     Vector() = default;
 	Vector(Rank size, T var); //构造函数
 	Vector(const initializer_list<T>& list); //列表构造函数
-	Vector(const Vector<T>& v); //复制构造
-	Vector& operator=(const Vector<T>& v); //拷贝运算符
-	Vector(Vector<T>&& v) noexcept; //移动构造
-	Vector& operator=(Vector<T>&& v) noexcept; //移动赋值运算符
+	Vector(const Vector& v); //复制构造
+	Vector& operator=(const Vector& v); //拷贝运算符
+	Vector(Vector&& v) noexcept; //移动构造
+	Vector& operator=(Vector&& v) noexcept; //移动赋值运算符
 	~Vector(); //析构
 	T& operator[](Rank r) const; //下标访问
 	
@@ -110,7 +110,7 @@ Vector<T>::Vector(const initializer_list<T>& list)
 }
 
 template<typename T>
-Vector<T>::Vector(Vector<T>&& v) noexcept : elem_(v.elem_), size_(v.size_), capacity_(v.capacity_)
+Vector<T>::Vector(Vector&& v) noexcept : elem_(v.elem_), size_(v.size_), capacity_(v.capacity_)
 {
 	cout << "move constructors" << endl;
 	v.elem_ = nullptr;
@@ -119,7 +119,7 @@ Vector<T>::Vector(Vector<T>&& v) noexcept : elem_(v.elem_), size_(v.size_), capa
 }
 
 template<typename T>
-Vector<T>& Vector<T>::operator=(Vector<T>&& v) noexcept
+Vector<T>& Vector<T>::operator=(Vector&& v) noexcept
 {
 	if(this != &v)
 	{
@@ -137,14 +137,14 @@ Vector<T>& Vector<T>::operator=(Vector<T>&& v) noexcept
 }
 
 template<typename T>
-Vector<T>::Vector(const Vector<T>& v)
+Vector<T>::Vector(const Vector& v)
 {
 	cout << "copy constructor" << endl;
 	CopyForm(v.elem_, 0, v.size_);
 }
 
 template<typename T>
-Vector<T>& Vector<T>::operator=(const Vector<T>& v)
+Vector<T>& Vector<T>::operator=(const Vector& v)
 {
 	cout << "assignment operator" << endl;
 	if(elem_) delete[] elem_;

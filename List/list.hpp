@@ -27,13 +27,13 @@ protected:
 public:
 	//构造
 	List(){ Init();}
-	List(List<T> const& l);
-	List(List<T> const& l, Rank r, int n);
+	List(List const& l);
+	List(List const& l, Rank r, int n);
 	List(ListNodePosi<T> p, int n);
 	List(const initializer_list<T>& list);
-	List(List<T>&& v) noexcept; //移动构造
-	List<T>& operator=(const List<T>& v); //拷贝运算符
-	List<T>& operator=(List<T>&& v) noexcept; //移动赋值运算符
+	List(List&& v) noexcept; //移动构造
+	List& operator=(const List& v); //拷贝运算符
+	List& operator=(List&& v) noexcept; //移动赋值运算符
 
 	//析构
 	~List();
@@ -124,13 +124,13 @@ List<T>::List(ListNodePosi<T> p, int n)
 }
 
 template<typename T>
-List<T>::List(const List<T>& l)
+List<T>::List(const List& l)
 {
 	CopyNodes(l.First(), l.size_);
 }
 
 template<typename T>
-List<T>::List(List<T> const& l, Rank r, int n)
+List<T>::List(List const& l, Rank r, int n)
 {
 	CopyNodes(l[r], n);
 }
@@ -146,7 +146,7 @@ List<T>::List(const initializer_list<T>& list)
 }
 
 template<typename T>
-List<T>& List<T>::operator=(const List<T>& v)
+List<T>& List<T>::operator=(const List& v)
 {
 	if(size_ > 0) Clear();
 	CopyNodes(v.First(), v.size_);
@@ -154,7 +154,7 @@ List<T>& List<T>::operator=(const List<T>& v)
 }
 
 template<typename T>
-List<T>::List(List<T>&& l) noexcept: size_(l.size), header_(l.header_), trailer_(l.trailer_)
+List<T>::List(List&& l) noexcept: size_(l.size), header_(l.header_), trailer_(l.trailer_)
 {
 	l.header_ = nullptr;
 	l.trailer_ = nullptr;
@@ -163,7 +163,7 @@ List<T>::List(List<T>&& l) noexcept: size_(l.size), header_(l.header_), trailer_
 }
 
 template<typename T>
-List<T>& List<T>::operator=(List<T>&& l) noexcept
+List<T>& List<T>::operator=(List&& l) noexcept
 {
 	if(this != &l)
 	{

@@ -31,7 +31,7 @@ template<typename T>
 class Print
 {
 public:
-	void operator()(T& var)
+	void operator()(T& var) const
 	{
 		cout << var << " ";
 	}
