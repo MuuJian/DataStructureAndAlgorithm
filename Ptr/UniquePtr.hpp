@@ -29,7 +29,7 @@ public:
     
     UniquePtr& operator=(const UniquePtr&) = delete;
     
-    UniquePtr(UniquePtr&& u) noexcept : ptr_(u.ptr_), del_(std::move(u.del_))
+    UniquePtr(UniquePtr&& u) noexcept : ptr_(u.ptr_), del_(u.del_)
     {
         u.ptr_ = nullptr;
     }
@@ -39,7 +39,7 @@ public:
         if(this != &u)
         {
             reset(u.ptr_);
-            del_ = std::move(u.del_);
+            del_ = u.del_;
             u.ptr_ = nullptr;
         }
         return *this;

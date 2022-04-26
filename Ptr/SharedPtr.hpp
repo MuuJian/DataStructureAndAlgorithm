@@ -27,7 +27,7 @@ public:
             del_ ? del_(ptr_) : delete ptr_;
             delete count_ptr_;
         }
-        ptr_= nullptr;
+        ptr_ = nullptr;
         count_ptr_ = nullptr;
     }
     

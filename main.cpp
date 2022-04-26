@@ -32,7 +32,10 @@ int main()
 {
     std::cout << "SharedPtr constructor with no managed object\n";
     {
-        SharedPtr<Foo> sh1;
+        SharedPtr<Foo> sh1(new Foo);
+        sh1 = sh1;
+        SharedPtr<Foo> sh2;
+        sh2.swap(sh1);
     }
 
     std::cout << "SharedPtr constructor with object\n";
