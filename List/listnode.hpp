@@ -31,26 +31,23 @@ public:
 	ListNode(T e, ListNodePosi<T> pred = nullptr, ListNodePosi<T> succ = nullptr)
 		: data_{e}, pred_{pred}, succ_{succ} {}
 
-	ListNodePosi<T> InsertAsPred(const T& e);
-	ListNodePosi<T> InsertAsSucc(const T& e);
+	ListNodePosi<T> InsertAsPred(const T& e)
+    {
+        ListNodePosi<T> x = new ListNode(e, pred_, this);
+        pred_ -> succ_ = x;
+        this -> pred_ = x;
+        return x;
+    }
+    
+	ListNodePosi<T> InsertAsSucc(const T& e)
+    {
+        ListNodePosi<T> x = new ListNode(e, this, succ_);
+        succ_ -> pred_ = x;
+        this -> succ_ = x;
+        return x;
+    }
+
 };
 
-template<typename T>
-ListNodePosi<T> ListNode<T>::InsertAsPred(const T& e)
-{
-	ListNodePosi<T> x = new ListNode(e, pred_, this);
-	pred_ -> succ_ = x;
-	this -> pred_ = x;
-	return x;
-}
-
-template<typename T>
-ListNodePosi<T> ListNode<T>::InsertAsSucc(const T& e)
-{
-	ListNodePosi<T> x = new ListNode(e, this, succ_);
-	succ_ -> pred_ = x;
-	this -> succ_ = x;
-	return x;
-}
 
 #endif /* list_h */
