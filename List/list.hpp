@@ -252,13 +252,13 @@ public:
     }
 	
 	//遍歷
-	void Traverse()
+    template<typename VST = Print<T> >
+	void Traverse(const VST& visit = VST())
     {
         for(auto p = header_ -> succ_; p != trailer_; p = p -> succ_)
         {
-            Print<T>()(p -> data_);
+            visit(p -> data_);
         }
-        cout << endl;
     }
 
 
