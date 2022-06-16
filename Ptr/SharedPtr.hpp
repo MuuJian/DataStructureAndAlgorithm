@@ -12,8 +12,7 @@ template<typename T>
 class SharedPtr
 {
 public:
-    using DelFuncPtr = void (*)(T*);
-    
+    using DelFuncPtr = void(*)(T*); //    typedef void (*DelFuncPtr)(T*);
     SharedPtr(T* ptr = nullptr, DelFuncPtr del = nullptr):
         ptr_(ptr), count_ptr_(new size_t(ptr != nullptr)), del_(del)
     {

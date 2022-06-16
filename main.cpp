@@ -1,15 +1,16 @@
 #include<iostream>
-#include<string>
-#include"list.hpp"
+#include<vector>
 using std::cout;
 using std::endl;
 
+template<class T, class U>
+decltype(*(T*)(0) * *(U*)(0)) mul(T x, U y)
+{
+    return x * y;
+}
 
 int main()
 {
-    List<int> l{1,2,2,2,3,4,5,6,7,8};
-    l.Reverse();
-    l.Traverse();
-    l.Deduplicate();
-    l.Traverse();
+    cout << mul(1, 2);
 }
+
