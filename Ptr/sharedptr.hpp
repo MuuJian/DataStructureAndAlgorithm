@@ -5,8 +5,8 @@
 //  Created by mumu on 6/3/2022.
 //
 
-#ifndef SharedPtr_h
-#define SharedPtr_h
+#ifndef sharedptr_h
+#define sharedptr_h
 
 template<typename T>
 class SharedPtr

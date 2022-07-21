@@ -5,8 +5,8 @@
 //  Created by mumu on 6/3/2022.
 //
 
-#ifndef UniquePtr_h
-#define UniquePtr_h
+#ifndef uniqueptr_h
+#define uniqueptr_h
 
 class Delete{
 public:
