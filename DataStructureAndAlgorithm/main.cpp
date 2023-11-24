@@ -1,14 +1,15 @@
-//
-//  main.cpp
-//  DataStructureAndAlgorithm
-//
-//  Created by mu mu on 2022/7/5.
-//
+#include<iostream>
+#include<string>
+#include"list.hpp"
+using std::cout;
+using std::endl;
 
-#include <iostream>
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    return 0;
+int main()
+{
+    for(int a = 0; a < 10; ++a)
+    {
+        int b = 1;
+        cout << b << endl;
+    }
 }

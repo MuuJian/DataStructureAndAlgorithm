@@ -11,16 +11,16 @@
 
 #include "header.hpp"
 
-template <typename T>
+template<typename T>
 class Vector
 {
 private:
-	Rank size_ = 0;
-	Rank capacity_ = 0;
+	size_type size_ = 0;
+	size_type capacity_ = 0;
 	T* elem_ = nullptr;
 	
 protected:
-	void CopyForm(const T* A, Rank lo, Rank hi)  //复制数组区间
+	void CopyForm(const T* A, size_type lo, size_type hi)  //复制数组区间
     {
         elem_ = new T[capacity_ = 2 * (hi - lo)];
         size_ = 0;
@@ -50,14 +50,14 @@ protected:
         delete[] _oldelem;
     }
     
-	T Remove(Rank r) //删除下标为r的元素
+	T Remove(size_type r) //删除下标为r的元素
     {
         T e = elem_[r];
         Remove(r, r + 1);
         return e;
     }
 
-	int Remove(Rank lo, Rank hi) //删除区间
+	int Remove(size_type lo, size_type hi) //删除区间
     {
         if(lo == hi) return 0;
         while(hi < size_) elem_[lo++] = elem_[hi++];
@@ -69,12 +69,12 @@ protected:
 	//排序
 	void SelectSort()
     {
-        Rank min = 0;
+        size_type min = 0;
         cout << "Seletct" << endl;
-        for(Rank i = 0; i < size_ - 1; ++i)
+        for(size_type i = 0; i < size_ - 1; ++i)
         {
             min = i;
-            for(Rank j = i + 1; j < size_; ++j)
+            for(size_type j = i + 1; j < size_; ++j)
             {
                 if(elem_[min] > elem_[j])
                     min = j;
@@ -86,9 +86,9 @@ protected:
 	void BubbleSort()
     {
         cout << "bubble" << endl;
-        for(Rank i = 0; i < size_; ++i)
+        for(size_type i = 0; i < size_; ++i)
         {
-            for(Rank j = i + 1; j < size_; ++j)
+            for(size_type j = i + 1; j < size_; ++j)
             {
                 if(elem_[i] > elem_[j])
                     swap(elem_[i], elem_[j]);
@@ -98,7 +98,7 @@ protected:
     
 	void InsertionSort()
     {
-        Rank i, j;
+        size_type i, j;
         int key;
         cout << "InsertionSort" << endl;
         for(i = 1; i < size_; ++i)
@@ -115,17 +115,17 @@ protected:
     }
 	
 	/*
-	void Merge(Rank lo, Rank mi, Rank hi);
-	void MergeSort(Rank lo, Rank hi);
-	Rank Partition(Rank lo, Rank hi);
-	void QuickSort(Rank lo, Rank hi);
-	void HeapSort(Rank lo, Rank hi);
+	void Merge(size_type lo, size_type mi, size_type hi);
+	void MergeSort(size_type lo, size_type hi);
+	size_type Partition(size_type lo, size_type hi);
+	void QuickSort(size_type lo, size_type hi);
+	void HeapSort(size_type lo, size_type hi);
 	*/
 	
 public:
     Vector() = default;
     
-    explicit Vector(Rank size, T var = 0)  //构造函数
+    explicit Vector(size_type size, T var = 0)  //构造函数
     {
         cout << "constructor" << endl;
         elem_ = new T[capacity_ = size * 2];
@@ -191,15 +191,15 @@ public:
         delete[] elem_;
     }
     
-	T& operator[](Rank r) const //下标访问
+	T& operator[](size_type r) const //下标访问
     {
         return elem_[r];
     }
 
-	void Insert(Rank r, const T& e) //插入
+	void Insert(size_type r, const T& e) //插入
     {
         Expand();
-        for(Rank i = size_; i > r; --i)
+        for(size_type i = size_; i > r; --i)
             elem_[i] = elem_[i - 1];
         elem_[r] = e;
         ++size_;
@@ -209,7 +209,7 @@ public:
         return Insert(size_, e);
     }
 	
-	Rank Size() const //规模
+	size_type Size() const //规模
     {
         return size_;
     }
@@ -221,8 +221,8 @@ public:
 	
 	int Deduplicate() //无序去重
     {
-        Rank oldsize = size_;
-        Rank i  = 1;
+        size_type oldsize = size_;
+        size_type i  = 1;
         while(i < size_)
         {
             (Find(elem_[i], 0, i) == i) ? ++i : Remove(i);
@@ -232,7 +232,7 @@ public:
     
 	int Uniquift() //有序去重
     {
-        Rank i = 0, j = 0;
+        size_type i = 0, j = 0;
         while(++j < size_)
         {
             if(elem_[i] != elem_[j])
@@ -244,7 +244,7 @@ public:
     
     void Unsort() //乱序
     {
-        for(Rank i = size_; i > 0; --i)
+        for(size_type i = size_; i > 0; --i)
             std::swap(elem_[i - 1], elem_[rand() % i]);
     }
 
@@ -255,12 +255,12 @@ public:
             visit(elem_[i]);
     }
 	
-	Rank Search(const T& e) const { return (0 >= size_) ? -1 : Search(e, 0, size_);} //有序查找
-	Rank Search(const T& e, Rank lo, Rank hi) const //有序区间查找
+	size_type Search(const T& e) const { return (0 >= size_) ? -1 : Search(e, 0, size_);} //有序查找
+	size_type Search(const T& e, size_type lo, size_type hi) const //有序区间查找
     {
         while(lo < hi)
         {
-            Rank mi = lo + (hi - lo) / 2;
+            size_type mi = lo + (hi - lo) / 2;
             if(e < elem_[mi])
                 hi = mi;
             else if(e > elem_[mi])
@@ -271,11 +271,11 @@ public:
         return -1;
     }
     
-    Rank Find(const T& e) const //无序查找
+    size_type Find(const T& e) const //无序查找
     {
         return Find(e, 0, size_);
     }
-    Rank Find(const T& e, Rank lo, Rank hi) const //无序区间查找
+    size_type Find(const T& e, size_type lo, size_type hi) const //无序区间查找
     {
         while((lo < hi) && e != elem_[lo])
             ++lo;

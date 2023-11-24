@@ -25,7 +25,7 @@ using std::swap;
 using std::vector;
 using std::string;
 
-using Rank = std::size_t;
+using size_type = std::size_t;
 
 template<typename T>
 class Print

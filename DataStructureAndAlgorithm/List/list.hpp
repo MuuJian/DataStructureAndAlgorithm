@@ -14,7 +14,7 @@ template<typename T>
 class List
 {
 private:
-	Rank size_ = 0;
+	size_type size_ = 0;
 	ListNodePosi<T> header_ = nullptr;
 	ListNodePosi<T> trailer_ = nullptr;
 	
@@ -63,7 +63,7 @@ public:
         CopyNodes(l.First(), l.size_);
     }
     
-	List(List const& l, Rank r, int n)
+	List(List const& l, size_type r, int n)
     {
         CopyNodes(l[r], n);
     }
@@ -124,7 +124,7 @@ public:
     }
 	
 	//可读接口
-	Rank Size() const
+	size_type Size() const
     {
         return size_;
     }
@@ -134,7 +134,7 @@ public:
         return size_ <= 0;
     }
     
-	T& operator[](Rank r) const
+	T& operator[](size_type r) const
     
     {
         ListNodePosi<T> p = First();
@@ -157,7 +157,7 @@ public:
 	{
 		return find(e, size_, trailer_);
 	}
-	ListNodePosi<T> Find(const T& e, Rank n, ListNodePosi<T> p) const
+	ListNodePosi<T> Find(const T& e, size_type n, ListNodePosi<T> p) const
     {
         while(0 < n--)
         {
@@ -172,7 +172,7 @@ public:
 	{
 		return Search(e, size_, trailer_);
 	}
-	ListNodePosi<T> Search(const T& e, Rank n, ListNodePosi<T> p) const
+	ListNodePosi<T> Search(const T& e, size_type n, ListNodePosi<T> p) const
     {
         while(0 < n--)
         {
@@ -211,7 +211,7 @@ public:
 	int Deduplicate()
     {
         if(size_ < 2) return 0;
-        Rank oldsize = size_;
+        size_type oldsize = size_;
         ListNodePosi<T> p = First(); int r = 1;
         while(trailer_ != (p -> succ_))
         {

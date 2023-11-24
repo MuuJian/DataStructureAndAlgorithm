@@ -18,6 +18,7 @@ public:
     {
     }
     
+
     void destroy()
     {
         if(!ptr_) return;
